@@ -10,13 +10,16 @@ import (
 )
 
 func main() {
-	fmt.Println("Part 1 - distanceList : ", distanceList())
-}
-
-func distanceList() int {
 	var list1 []int
 	var list2 []int
 
+	list1, list2 = sortLists()
+
+	fmt.Println("Part 1 - distanceList : ", distanceList(list1, list2))
+	fmt.Println("Part 2 - similarityScore : ", similarityScore(list1, list2))
+}
+
+func sortLists() (list1 []int, list2 []int) {
 	file, err := os.Open("input.txt")
 	if err != nil {
 		panic(err)
@@ -44,6 +47,10 @@ func distanceList() int {
 	sort.Sort(sort.IntSlice(list1))
 	sort.Sort(sort.IntSlice(list2))
 
+	return list1, list2
+}
+
+func distanceList(list1 []int, list2 []int) int {
 	var distanceList = 0
 
 	for i := 0; i < len(list1); i++ {
@@ -54,4 +61,20 @@ func distanceList() int {
 		}
 	}
 	return distanceList
+}
+
+func similarityScore(list1 []int, list2 []int) int {
+	var similarityScore = 0
+	for i := 0; i < len(list1); i++ {
+		var nbToFind = list1[i]
+		for j := 0; j < len(list2); j++ {
+			var occurence = 0
+			if list2[j] == nbToFind {
+				occurence = occurence + 1
+			}
+			var res = nbToFind * occurence
+			similarityScore += res
+		}
+	}
+	return similarityScore
 }
